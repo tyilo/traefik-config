@@ -1,0 +1,21 @@
+[log]
+  level = "INFO"
+
+[providers.docker]
+  exposedByDefault = false
+  network = "traefik"
+
+[api]
+  dashboard = true
+
+[entryPoints]
+  [entryPoints.http]
+    address = ":80"
+
+  [entryPoints.https]
+    address = ":443"
+
+[certificatesResolvers.le.acme]
+  email = "asgerdrewsen@gmail.com"
+  storage = "acme.json"
+  [certificatesResolvers.le.acme.tlsChallenge]
