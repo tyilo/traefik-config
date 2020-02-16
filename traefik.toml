@@ -4,6 +4,7 @@
 [providers.docker]
   exposedByDefault = false
   network = "traefik"
+  swarmMode = true
 
 [api]
   dashboard = true
