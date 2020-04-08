@@ -14,7 +14,7 @@ services:
       - 443:443
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./traefik.toml:/etc/traefik/traefik.toml
+      - ./traefik.yml:/etc/traefik/traefik.yml
       - ./acme.json:/acme.json
       - ./usersfile:/traefik-api-usersfile
     deploy:
