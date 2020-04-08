@@ -6,7 +6,7 @@ networks:
 
 services:
   traefik:
-    image: traefik:2.1
+    image: traefik:2.2
     networks:
       - traefik
     ports:
@@ -23,15 +23,7 @@ services:
 
         # Dashboard / API
         - traefik.http.routers.api.rule=Host(`traefik.tyilo.com`)
-        - traefik.http.routers.api.tls.certResolver=le
         - traefik.http.routers.api.service=api@internal
         - traefik.http.routers.api.middlewares=auth
         - traefik.http.services.api.loadbalancer.server.port=80
         - traefik.http.middlewares.auth.basicauth.usersfile=/traefik-api-usersfile
-
-        # Redirect all http to https
-        - traefik.http.routers.http-to-https.priority=1000
-        - traefik.http.routers.http-to-https.rule=PathPrefix(`/`)
-        - traefik.http.routers.http-to-https.entrypoints=http
-        - traefik.http.routers.http-to-https.middlewares=redirect-to-https
-        - traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https
