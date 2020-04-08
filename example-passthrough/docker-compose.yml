@@ -1,0 +1,34 @@
+version: "3.7"
+
+services:
+  nginx-http:
+    image: nginx:alpine
+    volumes:
+      - ./index_http.html:/usr/share/nginx/html/index.html
+    networks:
+      - traefik
+    deploy:
+      labels:
+        - traefik.enable=true
+        - traefik.http.routers.passthrough-test.priority=10000
+        - traefik.http.routers.passthrough-test.rule=Host(`passthrough.test`)
+        - traefik.http.services.passthrough-test.loadbalancer.server.port=80
+
+  nginx-tls:
+    image: nginx:alpine
+    volumes:
+      - ./index_tls.html:/usr/share/nginx/html/index.html
+      - ./tls.conf:/etc/nginx/conf.d/tls.conf
+      - ./cert:/etc/nginx/cert
+    networks:
+      - traefik
+    deploy:
+      labels:
+        - traefik.enable=true
+        - traefik.tcp.routers.tls-passthrough-test.rule=HostSNI(`passthrough.test`)
+        - traefik.tcp.routers.tls-passthrough-test.tls.passthrough=true
+        - traefik.tcp.services.tls-passthrough-test.loadbalancer.server.port=443
+
+networks:
+  traefik:
+    external: true

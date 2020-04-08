@@ -1,0 +1,4 @@
+#!/bin/bash
+exec openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 -nodes \
+  -keyout cert/cert.key -out cert/cert.crt -subj "/CN=passthrough.test" \
+  -addext "subjectAltName=DNS:passthrough.test"

@@ -10,7 +10,7 @@ services:
     deploy:
       labels:
         - traefik.enable=true
-        - traefik.http.routers.example-tyilo-com.rule=Host(`example.tyilo.com`)
+        - traefik.http.routers.example-tyilo-com.rule=Host(`example.test`)
         - traefik.http.routers.example-tyilo-com.tls.certResolver=le
         - traefik.http.services.example-tyilo-com.loadbalancer.server.port=80
 
