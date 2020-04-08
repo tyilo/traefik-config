@@ -1,0 +1,45 @@
+#!/bin/bash
+set -euo pipefail
+
+rm_stacks() {
+	sudo docker stack rm example-server example-passthrough traefik
+}
+
+test_contains() {
+	cmd="curl $1"
+	echo "$cmd:"
+	res=$($cmd 2>&1)
+	shift
+	ok=true
+	for s in "$@"; do
+		if ! echo "$res" | grep "$s" &> /dev/null; then
+			echo "  Doesn't contain: $res" >&2
+			ok=false
+		fi
+	done
+
+	if $ok; then
+		echo "  Ok"
+	else
+		echo "$res" >&2
+	fi
+}
+
+trap rm_stacks EXIT
+
+rm_stacks
+
+sleep 10
+
+sudo docker stack deploy --compose-file docker-compose.yml traefik
+
+sudo docker stack deploy --compose-file example-server/docker-compose.yml example-server
+sudo docker stack deploy --compose-file example-passthrough/docker-compose.yml example-passthrough
+
+sleep 20
+
+test_contains "-i http://example.test/ --resolve example.test:80:127.0.0.1" "Location: https://example.test/"
+test_contains "-k https://example.test/ --resolve example.test:443:127.0.0.1" "Yay"
+
+test_contains "curl -i http://passthrough.test/ --resolve passthrough.test:80:127.0.0.1" "Hi from HTTP passthrough"
+test_contains "curl -vk https://passthrough.test/ --resolve passthrough.test:443:127.0.0.1" "subject: CN=passthrough.test" "Hi from TLS passthrough"
