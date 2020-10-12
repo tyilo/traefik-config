@@ -36,6 +36,3 @@ certificatesResolvers:
       email: asgerdrewsen@gmail.com
       storage: acme.json
       tlsChallenge: {}
-
-pilot:
-  token: "c5439263-14ca-444f-8550-6bed58137e06"
