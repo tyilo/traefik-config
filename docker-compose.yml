@@ -6,7 +6,7 @@ networks:
 
 services:
   traefik:
-    image: traefik:2.2
+    image: traefik:2.3
     networks:
       - traefik
     ports:
