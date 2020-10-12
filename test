@@ -36,10 +36,10 @@ sudo docker-compose up -d
 sudo docker-compose -f example-server/docker-compose.yml up -d
 sudo docker-compose -f example-passthrough/docker-compose.yml up -d
 
-sleep 2
+sleep 5
 
-test_contains "-i http://example.test/ --resolve example.test:80:127.0.0.1" "Location: https://example.test/"
-test_contains "-k https://example.test/ --resolve example.test:443:127.0.0.1" "Yay"
+test_contains "-i http://example.localhost/ --resolve example.localhost:80:127.0.0.1" "Location: https://example.localhost/"
+test_contains "-k https://example.localhost/ --resolve example.localhost:443:127.0.0.1" "Yay"
 
-test_contains "-i http://passthrough.test/ --resolve passthrough.test:80:127.0.0.1" "Hi from HTTP passthrough"
-test_contains "-vk https://passthrough.test/ --resolve passthrough.test:443:127.0.0.1" "subject: CN=passthrough.test" "Hi from TLS passthrough"
+test_contains "-i http://passthrough.localhost/ --resolve passthrough.localhost:80:127.0.0.1" "Hi from HTTP passthrough"
+test_contains "-vk https://passthrough.localhost/ --resolve passthrough.localhost:443:127.0.0.1" "subject: CN=passthrough.localhost" "Hi from TLS passthrough"

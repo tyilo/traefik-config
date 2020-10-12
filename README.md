@@ -39,12 +39,12 @@ sudo docker-compose up -d
 You can test the HTTP to HTTPS redirection with:
 
 ```sh
-curl -i http://example.test/ --resolve example.test:80:127.0.0.1
+curl -i http://example.localhost/ --resolve example.localhost:80:127.0.0.1
 ```
 
 ```
 HTTP/1.1 302 Found
-Location: https://example.test/
+Location: https://example.localhost/
 Date: Wed, 08 Apr 2020 09:04:45 GMT
 Content-Length: 5
 Content-Type: text/plain; charset=utf-8
@@ -55,7 +55,7 @@ Found
 And test the server with:
 
 ```sh
-curl -k https://example.test/ --resolve example.test:443:127.0.0.1
+curl -k https://example.localhost/ --resolve example.localhost:443:127.0.0.1
 ```
 
 ```
@@ -66,10 +66,9 @@ If you want to access the website or Traefik's dashboard from your browser, you 
 
 ```
 127.0.0.1 traefik.tyilo.com
-127.0.0.1 example.test
 ```
 
-and then access [https://traefik.tyilo.com/](https://traefik.tyilo.com/) or [https://example.test/](https://example.test/).
+and then access [https://traefik.tyilo.com/](https://traefik.tyilo.com/) or [https://example.localhost/](https://example.localhost/).
 
 You will need to ignore the warning in your browser as you probably haven't obtained a valid TLS certificate for the domains.
 
@@ -93,7 +92,7 @@ sudo docker-compose up -d
 HTTP passthrough can be tested with:
 
 ```sh
-curl -i http://passthrough.test/ --resolve passthrough.test:80:127.0.0.1
+curl -i http://passthrough.localhost/ --resolve passthrough.localhost:80:127.0.0.1
 ```
 
 ```
@@ -112,16 +111,16 @@ Hi from HTTP passthrough.
 TLS passthrough can be tested with:
 
 ```sh
-curl -vk https://passthrough.test/ --resolve passthrough.test:443:127.0.0.1
+curl -vk https://passthrough.localhost/ --resolve passthrough.localhost:443:127.0.0.1
 ```
 
 ```
 ...
 * Server certificate:
-*  subject: CN=passthrough.test
+*  subject: CN=passthrough.localhost
 ...
 > GET / HTTP/1.1
-> Host: passthrough.test
+> Host: passthrough.localhost
 > User-Agent: curl/7.69.1
 > Accept: */*
 >
@@ -137,7 +136,7 @@ curl -vk https://passthrough.test/ --resolve passthrough.test:443:127.0.0.1
 < Accept-Ranges: bytes
 <
 Hi from TLS passthrough.
-* Connection #0 to host passthrough.test left intact
+* Connection #0 to host passthrough.localhost left intact
 ```
 
 Note that the certificate the server uses is the self-signed certificate we just generated,
