@@ -23,23 +23,17 @@ htpasswd usersfile <username>
 
 ## Usage
 
-Make sure that docker in swarm mode:
+Start Traefik:
 
 ```sh
-docker info | grep 'Swarm: inactive' && docker swarm init
-``
-
-Deploy Traefik as stack:
-
-```sh
-sudo docker stack deploy --compose-file docker-compose.yml traefik
+sudo docker-compose up -d
 ```
 
-And deploy the [example server](example-server):
+And start the [example server](example-server):
 
 ```sh
 cd example-server
-sudo docker stack deploy --compose-file docker-compose.yml example-server
+sudo docker-compose up -d
 ```
 
 You can test the HTTP to HTTPS redirection with:
@@ -92,7 +86,7 @@ To test it do the following:
 ```sh
 cd example-passthrough
 ./gen_cert
-sudo docker stack deploy --compose-file docker-compose.yml example-passthrough
+sudo docker-compose up -d
 ```
 
 
@@ -152,8 +146,10 @@ meaning Traefik didn't touch the TLS traffic.
 
 ## Cleaning up
 
-After testing you can remove all docker stacks with:
+After testing you can stop the docker containers with:
 
 ```sh
-sudo docker stack ls --format '{{.Name}}' | xargs sudo docker stack rm
+sudo docker-compose -f example-passthrough/docker-compose.yml down
+sudo docker-compose -f example-server/docker-compose.yml down
+sudo docker-compose down
 ```

@@ -23,13 +23,12 @@ services:
       - ./traefik.yml:/etc/traefik/traefik.yml
       - ./acme.json:/acme.json
       - ./usersfile:/traefik-api-usersfile
-    deploy:
-      labels:
-        - traefik.enable=true
+    labels:
+      - traefik.enable=true
 
-        # Dashboard / API
-        - traefik.http.routers.api.rule=Host(`traefik.tyilo.com`)
-        - traefik.http.routers.api.service=api@internal
-        - traefik.http.routers.api.middlewares=auth
-        - traefik.http.services.api.loadbalancer.server.port=80
-        - traefik.http.middlewares.auth.basicauth.usersfile=/traefik-api-usersfile
+      # Dashboard / API
+      - traefik.http.routers.api.rule=Host(`traefik.tyilo.com`)
+      - traefik.http.routers.api.service=api@internal
+      - traefik.http.routers.api.middlewares=auth
+      - traefik.http.services.api.loadbalancer.server.port=80
+      - traefik.http.middlewares.auth.basicauth.usersfile=/traefik-api-usersfile

@@ -1,8 +1,10 @@
 #!/bin/bash
 set -euo pipefail
 
-rm_stacks() {
-	sudo docker stack rm example-server example-passthrough traefik
+stop_apps() {
+	sudo docker-compose -f example-passthrough/docker-compose.yml down
+	sudo docker-compose -f example-server/docker-compose.yml down
+	sudo docker-compose down
 }
 
 test_contains() {
@@ -25,21 +27,19 @@ test_contains() {
 	fi
 }
 
-trap rm_stacks EXIT
+trap stop_apps EXIT
 
-rm_stacks
+stop_apps
 
-sleep 10
+sudo docker-compose up -d
 
-sudo docker stack deploy --compose-file docker-compose.yml traefik
+sudo docker-compose -f example-server/docker-compose.yml up -d
+sudo docker-compose -f example-passthrough/docker-compose.yml up -d
 
-sudo docker stack deploy --compose-file example-server/docker-compose.yml example-server
-sudo docker stack deploy --compose-file example-passthrough/docker-compose.yml example-passthrough
-
-sleep 20
+sleep 2
 
 test_contains "-i http://example.test/ --resolve example.test:80:127.0.0.1" "Location: https://example.test/"
 test_contains "-k https://example.test/ --resolve example.test:443:127.0.0.1" "Yay"
 
-test_contains "curl -i http://passthrough.test/ --resolve passthrough.test:80:127.0.0.1" "Hi from HTTP passthrough"
-test_contains "curl -vk https://passthrough.test/ --resolve passthrough.test:443:127.0.0.1" "subject: CN=passthrough.test" "Hi from TLS passthrough"
+test_contains "-i http://passthrough.test/ --resolve passthrough.test:80:127.0.0.1" "Hi from HTTP passthrough"
+test_contains "-vk https://passthrough.test/ --resolve passthrough.test:443:127.0.0.1" "subject: CN=passthrough.test" "Hi from TLS passthrough"

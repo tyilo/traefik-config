@@ -5,7 +5,6 @@ providers:
   docker:
     exposedByDefault: false
     network: traefik
-    swarmMode: true
 
 api:
   dashboard: true
@@ -25,9 +24,18 @@ entryPoints:
       tls:
         certResolver: le
 
+tls:
+  options:
+    default:
+      sniStrict: true
+      minVersion: VersionTLS13
+
 certificatesResolvers:
   le:
     acme:
       email: asgerdrewsen@gmail.com
       storage: acme.json
       tlsChallenge: {}
+
+pilot:
+  token: "c5439263-14ca-444f-8550-6bed58137e06"
