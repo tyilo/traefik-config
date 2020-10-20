@@ -15,7 +15,7 @@ test_contains() {
 	ok=true
 	for s in "$@"; do
 		if ! echo "$res" | grep "$s" &> /dev/null; then
-			echo "  Doesn't contain: $res" >&2
+			echo "  Doesn't contain: $s" >&2
 			ok=false
 		fi
 	done
