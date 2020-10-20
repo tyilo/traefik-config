@@ -39,7 +39,7 @@ sudo docker-compose up -d
 You can test the HTTP to HTTPS redirection with:
 
 ```sh
-curl -i http://example.localhost/ --resolve example.localhost:80:127.0.0.1
+curl -i http://example.localhost/
 ```
 
 ```
@@ -55,7 +55,7 @@ Found
 And test the server with:
 
 ```sh
-curl -k https://example.localhost/ --resolve example.localhost:443:127.0.0.1
+curl -k https://example.localhost/
 ```
 
 ```
@@ -92,7 +92,7 @@ sudo docker-compose up -d
 HTTP passthrough can be tested with:
 
 ```sh
-curl -i http://passthrough.localhost/ --resolve passthrough.localhost:80:127.0.0.1
+curl -i http://passthrough.localhost/
 ```
 
 ```
@@ -111,7 +111,7 @@ Hi from HTTP passthrough.
 TLS passthrough can be tested with:
 
 ```sh
-curl -vk https://passthrough.localhost/ --resolve passthrough.localhost:443:127.0.0.1
+curl -vk https://passthrough.localhost/
 ```
 
 ```
