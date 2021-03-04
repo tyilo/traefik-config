@@ -5,6 +5,9 @@ providers:
   docker:
     exposedByDefault: false
     network: traefik
+  file:
+    filename: /etc/traefik/traefik-dynamic.yml
+    watch: true
 
 api:
   dashboard: true
@@ -23,12 +26,6 @@ entryPoints:
     http:
       tls:
         certResolver: le
-
-tls:
-  options:
-    default:
-      sniStrict: true
-      minVersion: VersionTLS13
 
 certificatesResolvers:
   le:
